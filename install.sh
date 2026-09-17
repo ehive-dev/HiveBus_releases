@@ -14,7 +14,7 @@ UNIT="hivebus.service"
 REPO="${REPO:-ehive-dev/HiveBus_releases}"
 TAG="${TAG:-}"
 ARCH_REQ="arm64"
-PORT="${PORT:-8091}"
+APP_PORT="${HIVEBUS_PORT:-8091}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -97,9 +97,9 @@ fi
 
 systemctl enable --now "$UNIT"
 for _ in {1..30}; do
-  if curl -fsS "http://127.0.0.1:${PORT}/healthz" >/dev/null; then
+  if curl -fsS "http://127.0.0.1:${APP_PORT}/healthz" >/dev/null; then
     installed="$(dpkg-query -W -f='${Version}' "$APP_NAME")"
-    ok "HiveBus ${installed} läuft auf Port ${PORT}."
+    ok "HiveBus ${installed} läuft auf Port ${APP_PORT}."
     exit 0
   fi
   sleep 1
